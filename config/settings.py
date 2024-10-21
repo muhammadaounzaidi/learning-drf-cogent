@@ -30,6 +30,9 @@ ALLOWED_HOSTS = []
 
 # Application definition
 
+AUTH_USER_MODEL = 'users.User'
+
+
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -38,11 +41,12 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'django_extensions',
     'core',
     'communication',
-    'bid',
-    'mobile',
-    'user',
+    'bids',
+    'mobiles',
+    'users',
 ]
 
 MIDDLEWARE = [

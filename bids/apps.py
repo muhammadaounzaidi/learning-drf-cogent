@@ -1,6 +1,6 @@
 from django.apps import AppConfig
 
 
-class MobileConfig(AppConfig):
+class BidConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
-    name = 'mobile'
+    name = 'bids'
