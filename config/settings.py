@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'bids',
     'mobiles',
     'users',
+    'drf_yasg'
 ]
 
 MIDDLEWARE = [
