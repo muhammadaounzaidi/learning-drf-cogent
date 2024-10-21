@@ -30,7 +30,7 @@ ALLOWED_HOSTS = []
 
 # Application definition
 
-AUTH_USER_MODEL = 'user.User'
+AUTH_USER_MODEL = 'users.User'
 
 
 INSTALLED_APPS = [
@@ -44,9 +44,9 @@ INSTALLED_APPS = [
     'django_extensions',
     'core',
     'communication',
-    'bid',
-    'mobile',
-    'user',
+    'bids',
+    'mobiles',
+    'users',
 ]
 
 MIDDLEWARE = [
