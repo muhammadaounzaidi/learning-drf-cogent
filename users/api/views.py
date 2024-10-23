@@ -28,4 +28,4 @@ class RegisterView(APIView):
         else:
             response = Response(serializer.errors, status = status.HTTP_400_BAD_REQUEST)
 
-        return resposne
+        return response
