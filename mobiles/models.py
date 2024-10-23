@@ -14,4 +14,4 @@ class Mobile(TimeStampedModel):
     user = models.ForeignKey(User,on_delete=models.CASCADE, related_name = "mobiles" )
 
     def __str__(self):
-        return self.mobile_name
+        return self.name

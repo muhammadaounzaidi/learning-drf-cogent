@@ -12,7 +12,7 @@ class BidAdmin(admin.ModelAdmin):
         'modified',
         'user',
         'mobile',
-        'bid_amount',
+        'amount',
         'is_sold',
     )
     list_filter = ('created', 'modified', 'user', 'mobile', 'is_sold')
