@@ -15,7 +15,7 @@ class RegisterView(APIView):
         if serializer.is_valid(raise_exception = True):
             user = serializer.save()
             refresh = RefreshToken.for_user(user)
-            resposne = Response(
+            response = Response(
                 {
                     "user": {
                         "email": user.email,
@@ -26,6 +26,6 @@ class RegisterView(APIView):
                 status = status.HTTP_201_CREATED,
             )
         else:
-            resposne = Response(serializer.errors, status = status.HTTP_400_BAD_REQUEST)
+            response = Response(serializer.errors, status = status.HTTP_400_BAD_REQUEST)
 
         return resposne
