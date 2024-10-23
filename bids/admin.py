@@ -1,9 +1,18 @@
+# -*- coding: utf-8 -*-
 from django.contrib import admin
-from bids.models import Bid
 
+from .models import Bid
 
-# Register your models here.
 
 @admin.register(Bid)
 class BidAdmin(admin.ModelAdmin):
-    list_display = ('bid_amount',)
+    list_display = (
+        'id',
+        'created',
+        'modified',
+        'user',
+        'mobile',
+        'bid_amount',
+        'is_sold',
+    )
+    list_filter = ('created', 'modified', 'user', 'mobile', 'is_sold')

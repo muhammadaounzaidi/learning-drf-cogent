@@ -1,7 +1,19 @@
+# -*- coding: utf-8 -*-
 from django.contrib import admin
-from mobiles.models import Mobile
-# Register your models here.
+
+from .models import Mobile
+
 
 @admin.register(Mobile)
 class MobileAdmin(admin.ModelAdmin):
-    list_display = ('mobile_name','mobile_company','mobile_description','mobile_condition')
+    list_display = (
+        'id',
+        'created',
+        'modified',
+        'name',
+        'company',
+        'description',
+        'condition',
+        'user',
+    )
+    list_filter = ('created', 'modified', 'user')

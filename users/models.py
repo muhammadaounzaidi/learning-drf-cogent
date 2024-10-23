@@ -10,6 +10,7 @@ class User(AbstractUser,TimeStampedModel):
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = []
     objects = UserManager()
+
     class Meta:
         verbose_name = "User"
         verbose_name_plural = "Users"

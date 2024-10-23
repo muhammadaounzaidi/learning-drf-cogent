@@ -47,13 +47,17 @@ INSTALLED_APPS = [
     'bids',
     'mobiles',
     'users',
-    'drf_yasg'
+    'drf_yasg',
+    'django_admin_generator',
 ]
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
+    ]
 }
 
 

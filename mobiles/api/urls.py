@@ -1,7 +1,7 @@
 from django.urls import path
 
-from .views import MobileAPIView
+from .views import MarketPlaceMobileAPIView
 
 urlpatterns = [
-    path("mobile/",MobileAPIView.as_view(),name="mobile"),
+    path("marketplace/", MarketPlaceMobileAPIView.as_view(), name="marketplace"),
 ]

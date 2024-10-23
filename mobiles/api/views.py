@@ -5,23 +5,25 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated, AllowAny
 
-class MobileAPIView(APIView):
+class MarketPlaceMobileAPIView(APIView):
 
     def get_permissions(self):
-        if self.request.method =='POST':
-            return [IsAuthenticated()]
+        if self.request.method == 'POST':
+            permission = [IsAuthenticated()]
         else:
-            return [AllowAny()]
+            permission = [AllowAny()]
+        return permission
 
     def get(self,request):
-        queryset=Mobile.objects.all()
-        serializer = MobileSerializer(queryset,many=True)
+        queryset = Mobile.objects.all()
+        serializer = MobileSerializer(queryset, many = True)
         return Response(serializer.data)
 
     def post(self, request):
-        serializer=MobileSerializer(data=request.data)
+        serializer = MobileSerializer(data = request.data)
         if serializer.is_valid():
             serializer.save()
-            return Response(serializer.data,status=status.HTTP_201_CREATED)
+            response = Response(serializer.data, status = status.HTTP_201_CREATED)
         else:
-            return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
+            response = Response(serializer.errors, status = status.HTTP_400_BAD_REQUEST)
+        return response
