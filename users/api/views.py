@@ -1,4 +1,3 @@
-from django.contrib.auth import authenticate
 from rest_framework import status
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
@@ -11,9 +10,9 @@ class RegisterView(APIView):
     permission_classes = [AllowAny]
 
     def post(self, request, *args, **kwargs):
-        serializer = RegisterSerializer(data = request.data)
+        serializer = RegisterSerializer(data=request.data)
 
-        if serializer.is_valid(raise_exception = True):
+        if serializer.is_valid(raise_exception=True):
             user = serializer.save()
             refresh = RefreshToken.for_user(user)
             response = Response(
@@ -24,9 +23,9 @@ class RegisterView(APIView):
                     "refresh": str(refresh),
                     "access": str(refresh.access_token),
                 },
-                status = status.HTTP_201_CREATED,
+                status=status.HTTP_201_CREATED,
             )
         else:
-            response = Response(serializer.errors, status = status.HTTP_400_BAD_REQUEST)
+            response = Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
         return response

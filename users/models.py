@@ -4,7 +4,7 @@ from users.manager import UserManager
 from django_extensions.db.models import TimeStampedModel
 
 
-class User(AbstractUser,TimeStampedModel):
+class User(AbstractUser, TimeStampedModel):
     email = models.EmailField(unique=True)
     username = None
     USERNAME_FIELD = "email"

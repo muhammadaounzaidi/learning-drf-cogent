@@ -13,4 +13,3 @@ class Bid(TimeStampedModel):
 
     def __str__(self):
         return str(self.amount)
-
