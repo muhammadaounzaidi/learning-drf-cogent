@@ -1,11 +1,9 @@
 from django.db import models
-
 from mobiles.models import Mobile
 from users.models import User
-
 from django_extensions.db.models import TimeStampedModel
 
-# Create your models here.
+
 class Bid(TimeStampedModel):
     amount = models.IntegerField()
     is_last_bid = models.BooleanField(default=False)
@@ -15,3 +13,4 @@ class Bid(TimeStampedModel):
 
     def __str__(self):
         return str(self.amount)
+

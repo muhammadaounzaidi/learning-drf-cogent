@@ -1,7 +1,5 @@
-# -*- coding: utf-8 -*-
 from django.contrib import admin
-
-from .models import Mobile
+from mobiles.models import Mobile
 
 
 @admin.register(Mobile)
@@ -15,6 +13,5 @@ class MobileAdmin(admin.ModelAdmin):
         'description',
         'condition',
         'is_sold',
-        'user',
     )
-    list_filter = ('created', 'modified', 'user')
+    list_filter = ('created', 'modified')
