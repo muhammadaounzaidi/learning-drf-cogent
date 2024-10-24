@@ -10,6 +10,7 @@ class Mobile(TimeStampedModel):
     company = models.CharField(max_length=255)
     description = models.TextField()
     condition = models.CharField(max_length=20,choices=MOBILE_CONDITION_CHOICES)
+    is_sold = models.BooleanField(default = False)
 
     user = models.ForeignKey(User,on_delete=models.CASCADE, related_name = "mobiles" )
 

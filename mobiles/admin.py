@@ -14,6 +14,7 @@ class MobileAdmin(admin.ModelAdmin):
         'company',
         'description',
         'condition',
+        'is_sold',
         'user',
     )
     list_filter = ('created', 'modified', 'user')
