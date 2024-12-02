@@ -27,14 +27,14 @@ schema_view = get_schema_view(
         description="API documentation for Mobile Bidding Platform",
     ),
     public=True,
-    permission_classes=(permissions.AllowAny,),
+    permission_classes=(permissions.AllowAny),
 )
 
 
 urlpatterns = [
     path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
     path('admin/', admin.site.urls),
-    path('api/users/', include("users.api.urls")),
-    path('api/mobiles/', include("mobiles.api.urls")),
-    path('api/bids/', include("bids.api.urls"))
+    path('api/users/', include("mobile_marketplace.users.api.urls")),
+    path('api/mobiles/', include("mobile_marketplace.mobiles.api.urls")),
+    path('api/bids/', include("mobile_marketplace.bids.api.urls"))
 ]
