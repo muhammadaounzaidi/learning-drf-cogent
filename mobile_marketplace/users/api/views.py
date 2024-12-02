@@ -11,21 +11,12 @@ class RegisterView(APIView):
 
     def post(self, request, *args, **kwargs):
         serializer = RegisterSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        user = serializer.save()
+        refresh = RefreshToken.for_user(user)
 
-        if serializer.is_valid(raise_exception=True):
-            user = serializer.save()
-            refresh = RefreshToken.for_user(user)
-            response = Response(
-                {
-                    "user": {
-                        "email": user.email,
-                    },
-                    "refresh": str(refresh),
-                    "access": str(refresh.access_token),
-                },
-                status=status.HTTP_201_CREATED,
+        return Response({
+            "user": {"email": user.email},
+            "refresh": str(refresh), "access": str(refresh.access_token)},
+            status=status.HTTP_201_CREATED,
             )
-        else:
-            response = Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-        return response

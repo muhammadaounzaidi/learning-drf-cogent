@@ -7,7 +7,7 @@ from rest_framework import status
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.exceptions import NotFound
 from django.shortcuts import get_object_or_404
-
+from mobile_marketplace.bids.choices import BidStateTypes
 
 class MobileListCreateAPIView(APIView):
     def get_permissions(self):
@@ -27,13 +27,9 @@ class MobileListCreateAPIView(APIView):
         data = request.data.copy()
         data['user'] = request.user.id
         serializer = MobileSerializer(data=data)
-
-        if serializer.is_valid():
-            serializer.save()
-            response = Response(serializer.data, status=status.HTTP_201_CREATED)
-        else:
-            response = Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-        return response
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data)
 
 
 class MobileDetailAPIView(APIView):
@@ -51,24 +47,16 @@ class MobileDetailAPIView(APIView):
     def put(self, request, pk):
         instance = self.get_object(pk)
         serializer = MobileSerializer(instance, data=request.data)
-
-        if serializer.is_valid():
-            serializer.save()
-            response = Response(serializer.data)
-        else:
-            response = Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-        return response
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data)
 
     def patch(self, request, pk):
         instance = self.get_object(pk)
         serializer = MobileSerializer(instance, data=request.data, partial=True)
-
-        if serializer.is_valid():
-            serializer.save()
-            response = Response(serializer.data)
-        else:
-            response = Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-        return response
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data)
 
 
 class UserMobileListAPIView(APIView):
@@ -88,23 +76,24 @@ class IsMobileSoldAPIView(APIView):
     def patch(self, request, pk):
         instance = self.get_object(pk)
         serializer = MobileSerializer(instance, data=request.data, partial=True)
+        serializer.is_valid(raise_exception=True)
 
-        if serializer.is_valid():
-            bid = Bid.objects.filter(mobile=pk).last()
+        bid = Bid.objects.filter(mobile=pk).last()
+
+        if bid and bid.amount:
             validated_data = serializer.validated_data
             validated_data['is_sold'] = True
 
-            if bid and bid.amount:
-                validated_data['sold_amount'] = bid.amount
-                serializer.save(**validated_data)
-                response = Response(serializer.data)
-            else:
-                error_message = {
-                    'message': [
-                        "No bids on this mobile"
-                    ]
-                }
-                response = Response(error_message, status=status.HTTP_400_BAD_REQUEST)
+            Bid.objects.filter(mobile=pk).exclude(id=bid.id).update(status=BidStateTypes.REJECTED)
+            bid.status = BidStateTypes.ACCEPTED
+            bid.save()
+
+            serializer.save(**validated_data)
+            response = Response(serializer.data)
         else:
-            response = Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            error_message = {
+                'message': ["No bids on this mobile"]
+            }
+            response = Response(error_message, status=status.HTTP_400_BAD_REQUEST)
+
         return response

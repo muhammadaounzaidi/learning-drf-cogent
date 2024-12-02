@@ -20,7 +20,7 @@ class RegisterSerializer(serializers.ModelSerializer):
             )
 
     def create(self, validated_data):
-        user = User(email=validated_data["email"])
-        user.set_password(validated_data["password"])
-        user.save()
-        return user
+        instance = super().create(validated_data)
+        instance.set_password(validated_data['password'])
+        instance.save()
+        return instance

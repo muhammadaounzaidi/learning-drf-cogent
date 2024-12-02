@@ -9,6 +9,6 @@ class BidAdmin(admin.ModelAdmin):
         'created',
         'modified',
         'amount',
-        'is_last_bid',
+        'status'
     )
-    list_filter = ('created', 'modified', 'is_last_bid')
+    list_filter = ('created', 'modified')

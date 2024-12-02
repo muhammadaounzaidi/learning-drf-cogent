@@ -1,7 +1,7 @@
 from django.urls import path
-from mobile_marketplace.bids.api.views import BidPostAPIView, BidOnMobileGetAPIView
+from mobile_marketplace.bids.api.views import BidCreateAPIView, MobileBidListAPIView
 
 urlpatterns = [
-    path("create_mobile-bid/", BidPostAPIView.as_view(), name="bid-amount"),
-    path("get_all_bids-on-mobile/<int:pk>/", BidOnMobileGetAPIView.as_view(), name="bids-on-mobile")
+    path("create/", BidCreateAPIView.as_view(), name="create_bid"),
+    path("mobile/<int:pk>/", MobileBidListAPIView.as_view(), name="mobile_bids")
 ]

@@ -2,7 +2,12 @@ from rest_framework import serializers
 from mobile_marketplace.mobiles.models import Mobile
 
 
+class MobileIDSerializer(serializers.Serializer):
+    id = serializers.IntegerField()
+
+
 class MobileSerializer(serializers.ModelSerializer):
+
     class Meta:
         model = Mobile
         fields = (
@@ -13,5 +18,5 @@ class MobileSerializer(serializers.ModelSerializer):
             'is_sold',
             'condition',
             'user',
-            'sold_amount'
+            'asking_amount'
             )

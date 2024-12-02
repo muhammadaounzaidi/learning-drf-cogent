@@ -13,5 +13,6 @@ class MobileAdmin(admin.ModelAdmin):
         'description',
         'condition',
         'is_sold',
+        'asking_amount'
     )
     list_filter = ('created', 'modified')
