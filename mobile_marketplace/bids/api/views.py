@@ -13,36 +13,24 @@ class BidCreateAPIView(APIView):
     def post(self, request):
         data = request.data.copy()
         data['user'] = request.user.id
+
+        mobile = get_object_or_404(Mobile, id=data['mobile'])
+        new_bid_amount = Decimal(data['amount'])
+
+        last_bid = Bid.objects.filter(mobile=mobile).order_by('-created').first()
+        min_bid = Decimal(mobile.asking_amount if last_bid is None else last_bid.amount)
+
+        if new_bid_amount <= min_bid:
+            return Response(
+                {'amount': [f'Bid amount must be greater than {min_bid}.']},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
         serializer = BidSerializer(data=data)
         serializer.is_valid(raise_exception=True)
+        serializer.save()
 
-        new_bid_amount = Decimal(data['amount'])
-        mobile_id = data['mobile']
-
-        mobile = get_object_or_404(Mobile, id=mobile_id)
-        asking_amount = Decimal(mobile.asking_amount)
-
-        last_bid = Bid.objects.filter(mobile=mobile_id).order_by('-created').first()
-
-        if last_bid is None:
-            if new_bid_amount < asking_amount:
-                error_message = {
-                    'amount': [
-                        f'Bid amount must be greater than the asking amount of {asking_amount}.'
-                    ]
-                }
-                return Response(error_message, status=status.HTTP_400_BAD_REQUEST)
-
-        if last_bid is None or new_bid_amount > last_bid.amount:
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-
-        error_message = {
-            'amount': [
-                f'Bid amount must be greater than the last bid of {last_bid.amount} '
-            ]
-        }
-        return Response(error_message, status=status.HTTP_400_BAD_REQUEST)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 
 class MobileBidListAPIView(APIView):

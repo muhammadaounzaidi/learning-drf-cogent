@@ -3,7 +3,11 @@ from mobile_marketplace.mobiles.models import Mobile
 
 
 class MobileIDSerializer(serializers.Serializer):
-    id = serializers.IntegerField()
+    class Meta:
+        model = Mobile
+        fields = (
+            'id',
+            )
 
 
 class MobileSerializer(serializers.ModelSerializer):
