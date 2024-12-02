@@ -8,7 +8,7 @@ class Mobile(TimeStampedModel):
     name = models.CharField(max_length=255)
     company = models.CharField(max_length=255)
     description = models.TextField()
-    condition = models.CharField(max_length=20, choices=MobileConditionType)
+    condition = models.CharField(max_length=255, choices=MobileConditionType)
     is_sold = models.BooleanField(default=False)
     sold_amount = models.FloatField(null=True, blank=True)
 
