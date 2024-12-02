@@ -37,7 +37,7 @@ class BidPostAPIView(APIView):
         return response
 
 
-class BidGetAPIView(APIView):
+class BidOnMobileGetAPIView(APIView):
     def get(self, request, pk):
         bids_on_mobile = Bid.objects.filter(mobile=pk)
         serializer = BidSerializer(bids_on_mobile, many=True)
