@@ -1,8 +1,8 @@
 from django.urls import path
 from mobile_marketplace.mobiles.api.views import (MobileListCreateAPIView,
-                               MobileDetailAPIView,
-                               UserMobileListAPIView,
-                               IsMobileSoldAPIView)
+                                                  MobileDetailAPIView,
+                                                  UserMobileListAPIView,
+                                                  IsMobileSoldAPIView)
 
 urlpatterns = [
     path('marketplace/', MobileListCreateAPIView.as_view(), name='mobile-list-create'),
