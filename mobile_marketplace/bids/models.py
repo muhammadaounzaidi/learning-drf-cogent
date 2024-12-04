@@ -21,7 +21,7 @@ class Bid(TimeStampedModel):
         Bid.objects.filter(mobile=self.mobile).exclude(id=self.id).update(state=BidStateTypes.REJECTED)
 
         self.state = BidStateTypes.ACCEPTED
-        self.save()
+        self.save(update_fields=['state'])
 
     def __str__(self):
         return str(self.amount)
