@@ -19,5 +19,5 @@ urlpatterns = [
     path('generic/', UserMobileGenericAPIView.as_view(), name='user_mobiles_generic'),
     path('generic/marketplace/', MobileListCreateGenericAPIView.as_view(), name='marketplace_generic'),
     path('<int:pk>/generic/', MobileGenericAPIView.as_view(), name='mobile_detail_generic'),
-    path('generic/delete/<int:pk>/', MobileDeleteGenericAPIView.as_view(), name='mobile-delete_generic'),
+    path('generic/delete/<int:pk>/', MobileDeleteGenericAPIView.as_view(), name='mobile_delete_generic'),
 ]
