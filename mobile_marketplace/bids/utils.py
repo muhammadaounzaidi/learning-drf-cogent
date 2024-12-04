@@ -1,2 +1,2 @@
-def has_valid_bid(self):
-    return self.amount > 0
+def has_valid_bid(bid):
+    return bid.amount > 0

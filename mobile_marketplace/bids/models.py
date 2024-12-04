@@ -16,14 +16,16 @@ class Bid(TimeStampedModel):
 
     @transition(field=state, source=BidStateTypes.PENDING, target=BidStateTypes.ACCEPTED, conditions=[has_valid_bid])
     def accept_bid(self):
-        self.mobile.is_sold = True
-        self.mobile.save()
+        if has_valid_bid(self):
+            self.mobile.is_sold = True
+            self.mobile.save()
 
-        Bid.objects.filter(mobile=self.mobile).exclude(id=self.id).update(state=BidStateTypes.REJECTED)
+            Bid.objects.filter(mobile=self.mobile).exclude(id=self.id).update(state=BidStateTypes.REJECTED)
 
-        self.state = BidStateTypes.ACCEPTED
-        self.save()
-        return self
+            self.state = BidStateTypes.ACCEPTED
+            self.save()
+            return self
+        return None
 
     def __str__(self):
         return str(self.amount)
