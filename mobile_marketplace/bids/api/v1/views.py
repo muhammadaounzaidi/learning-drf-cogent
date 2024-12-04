@@ -7,7 +7,7 @@ from mobile_marketplace.bids.models import Bid
 from mobile_marketplace.mobiles.models import Mobile
 from mobile_marketplace.bids.choices import BidStateTypes
 from mobile_marketplace.bids.permissions import IsMobileOwner
-from rest_framework import generics
+from rest_framework.generics import CreateAPIView, ListAPIView
 
 
 class BidCreateAPIView(APIView):
@@ -45,12 +45,12 @@ class BidAcceptAPIView(APIView):
 # Generic Views
 
 
-class BidCreateGenericView(generics.CreateAPIView):
+class BidCreateGenericAPIView(CreateAPIView):
     queryset = Bid.objects.all()
     serializer_class = BidSerializer
 
 
-class MobileBidGenericListView(generics.ListAPIView):
+class MobileBidGenericListAPIView(ListAPIView):
     serializer_class = BidSerializer
 
     def get_queryset(self):

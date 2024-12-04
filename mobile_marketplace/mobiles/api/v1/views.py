@@ -4,7 +4,8 @@ from mobile_marketplace.mobiles.api.v1.serializers import MobileSerializer
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.permissions import AllowAny
-from rest_framework import generics
+from rest_framework.generics import (RetrieveUpdateAPIView, ListAPIView,
+                                     DestroyAPIView, ListCreateAPIView)
 from django.shortcuts import get_object_or_404
 from mobile_marketplace.bids.permissions import IsMobileOwner
 
@@ -69,7 +70,7 @@ class MobileDeleteAPIView(APIView):
 
 # Generic Views
 
-class MobileListCreateGenericView(generics.ListCreateAPIView):
+class MobileListCreateGenericAPIView(ListCreateAPIView):
     queryset = Mobile.objects.all()
     serializer_class = MobileSerializer
 
@@ -79,18 +80,18 @@ class MobileListCreateGenericView(generics.ListCreateAPIView):
         return super().get_permissions()
 
 
-class MobileGenericView(generics.RetrieveUpdateAPIView):
+class MobileGenericAPIView(RetrieveUpdateAPIView):
     queryset = Mobile.objects.all()
     serializer_class = MobileSerializer
 
 
-class UserMobileGenericView(generics.ListAPIView):
+class UserMobileGenericAPIView(ListAPIView):
     serializer_class = MobileSerializer
 
     def get_queryset(self):
         return Mobile.objects.filter(user=self.request.user)
 
 
-class MobileDeleteGenericView(generics.DestroyAPIView):
+class MobileDeleteGenericAPIView(DestroyAPIView):
     queryset = Mobile.objects.all()
     serializer_class = MobileSerializer

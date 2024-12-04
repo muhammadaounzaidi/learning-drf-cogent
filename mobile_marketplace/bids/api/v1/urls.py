@@ -1,7 +1,7 @@
 from django.urls import path
 from mobile_marketplace.bids.api.v1.views import (BidCreateAPIView, MobileBidListAPIView,
-                                                  BidAcceptAPIView, BidCreateGenericView,
-                                                  MobileBidGenericListView)
+                                                  BidAcceptAPIView, BidCreateGenericAPIView,
+                                                  MobileBidGenericListAPIView)
 
 urlpatterns = [
     path('create/', BidCreateAPIView.as_view(), name='create_bid'),
@@ -10,6 +10,6 @@ urlpatterns = [
 
     # Generic Views URL
 
-    path('generic/create/', BidCreateGenericView.as_view(), name='create_bid'),
-    path('generic/mobile/<int:pk>/', MobileBidGenericListView.as_view(), name='mobile_bids'),
+    path('generic/create/', BidCreateGenericAPIView.as_view(), name='create_bid_generic'),
+    path('generic/mobile/<int:pk>/', MobileBidGenericListAPIView.as_view(), name='mobile_bids_generic'),
 ]
