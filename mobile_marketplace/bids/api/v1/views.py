@@ -5,7 +5,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from mobile_marketplace.bids.models import Bid
 from mobile_marketplace.mobiles.models import Mobile
-from mobile_marketplace.mobiles.api.v1.serializers import MobileSerializer
+from mobile_marketplace.bids.choices import BidStateTypes
 from mobile_marketplace.bids.permissions import IsMobileOwner
 
 
@@ -29,16 +29,14 @@ class BidAcceptAPIView(APIView):
     permission_classes = [IsMobileOwner]
 
     def get_object(self, pk):
-        return get_object_or_404(Bid, pk=pk)
+        return get_object_or_404(Bid, pk=pk, state=BidStateTypes.PENDING)
 
     def patch(self, request, pk):
         instance = self.get_object(pk)
         serializer = BidSerializer(instance, data=request.data, partial=True)
         serializer.is_valid(raise_exception=True)
 
-        bid = instance.accept_bid()
+        instance.accept_bid()
 
-        if bid:
-            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
-        return Response({"message": ["No valid bids on this mobile"]}, status=status.HTTP_400_BAD_REQUEST)

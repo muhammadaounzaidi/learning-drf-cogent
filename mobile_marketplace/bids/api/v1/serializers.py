@@ -20,3 +20,8 @@ class BidSerializer(serializers.ModelSerializer):
             'state',
             'user'
             )
+
+    def validate_amount(self, value):
+        if value <= 0:
+            raise serializers.ValidationError("Amount should be greater than 0.")
+        return value
