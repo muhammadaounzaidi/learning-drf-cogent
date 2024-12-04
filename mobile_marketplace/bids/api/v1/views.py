@@ -1,0 +1,44 @@
+from django.shortcuts import get_object_or_404
+from rest_framework.views import APIView
+from mobile_marketplace.bids.api.v1.serializers import BidSerializer
+from rest_framework.response import Response
+from rest_framework import status
+from mobile_marketplace.bids.models import Bid
+from mobile_marketplace.mobiles.models import Mobile
+from mobile_marketplace.mobiles.api.v1.serializers import MobileSerializer
+from mobile_marketplace.bids.permissions import IsMobileOwner
+
+
+class BidCreateAPIView(APIView):
+    def post(self, request):
+        serializer = BidSerializer(data=request.data, context={'request': request})
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+
+class MobileBidListAPIView(APIView):
+    def get(self, request, pk):
+        mobile = get_object_or_404(Mobile, id=pk)
+        bids_on_mobile = Bid.objects.filter(mobile=mobile)
+        serializer = BidSerializer(bids_on_mobile, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+class BidAcceptAPIView(APIView):
+    permission_classes = [IsMobileOwner]
+
+    def get_object(self, pk):
+        return get_object_or_404(Bid, pk=pk)
+
+    def patch(self, request, pk):
+        instance = self.get_object(pk)
+        serializer = BidSerializer(instance, data=request.data, partial=True)
+        serializer.is_valid(raise_exception=True)
+
+        bid = instance.accept_bid()
+
+        if bid:
+            return Response(serializer.data, status=status.HTTP_200_OK)
+
+        return Response({"message": ["No valid bids on this mobile"]}, status=status.HTTP_400_BAD_REQUEST)

@@ -18,7 +18,7 @@ schema_view = get_schema_view(
 urlpatterns = [
     path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
     path('admin/', admin.site.urls),
-    path('api/users/', include("mobile_marketplace.users.api.urls")),
-    path('api/mobiles/', include("mobile_marketplace.mobiles.api.urls")),
-    path('api/bids/', include("mobile_marketplace.bids.api.urls"))
+    path('api/v1/users/', include("mobile_marketplace.users.api.v1.urls")),
+    path('api/v1/mobiles/', include("mobile_marketplace.mobiles.api.v1.urls")),
+    path('api/v1/bids/', include("mobile_marketplace.bids.api.v1.urls"))
 ]

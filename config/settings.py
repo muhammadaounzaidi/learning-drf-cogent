@@ -40,6 +40,7 @@ THIRD_PARTY_APPS = [
     'django_extensions',
     'drf_yasg',
     'django_admin_generator',
+    'django_fsm'
 ]
 
 CUSTOM_APPS = [

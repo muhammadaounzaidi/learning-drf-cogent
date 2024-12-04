@@ -1,16 +1,13 @@
 from rest_framework import serializers
 from mobile_marketplace.mobiles.models import Mobile
-
-
-class MobileIDSerializer(serializers.Serializer):
-    class Meta:
-        model = Mobile
-        fields = (
-            'id',
-            )
+from mobile_marketplace.users.models import User
 
 
 class MobileSerializer(serializers.ModelSerializer):
+    user = serializers.PrimaryKeyRelatedField(
+        default=serializers.CurrentUserDefault(),
+        queryset=User.objects.filter(is_active=True),
+    )
 
     class Meta:
         model = Mobile
@@ -21,6 +18,6 @@ class MobileSerializer(serializers.ModelSerializer):
             'description',
             'is_sold',
             'condition',
-            'user',
-            'asking_amount'
+            'asking_amount',
+            'user'
             )
