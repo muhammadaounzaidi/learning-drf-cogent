@@ -4,16 +4,16 @@ from mobile_marketplace.mobiles.api.v1.serializers import MobileSerializer
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.permissions import AllowAny
+from rest_framework import generics
 from django.shortcuts import get_object_or_404
 from mobile_marketplace.bids.permissions import IsMobileOwner
 
 
 class MobileListCreateAPIView(APIView):
     def get_permissions(self):
-        permissions = super().get_permissions()
-        if self.request.method is 'GET':
-            permissions.append(AllowAny())
-        return permissions
+        if self.request.method == 'GET':
+            return [AllowAny()]
+        return super().get_permissions()
 
     def get(self, request):
         queryset = Mobile.objects.all()
@@ -65,3 +65,32 @@ class MobileDeleteAPIView(APIView):
         mobile = get_object_or_404(Mobile, pk=pk)
         mobile.delete()
         return Response({"message": "Mobile deleted successfully."}, status=status.HTTP_204_NO_CONTENT)
+
+
+# Generic Views
+
+class MobileListCreateGenericView(generics.ListCreateAPIView):
+    queryset = Mobile.objects.all()
+    serializer_class = MobileSerializer
+
+    def get_permissions(self):
+        if self.request.method == 'GET':
+            return [AllowAny()]
+        return super().get_permissions()
+
+
+class MobileGenericView(generics.RetrieveUpdateAPIView):
+    queryset = Mobile.objects.all()
+    serializer_class = MobileSerializer
+
+
+class UserMobileGenericView(generics.ListAPIView):
+    serializer_class = MobileSerializer
+
+    def get_queryset(self):
+        return Mobile.objects.filter(user=self.request.user)
+
+
+class MobileDeleteGenericView(generics.DestroyAPIView):
+    queryset = Mobile.objects.all()
+    serializer_class = MobileSerializer
