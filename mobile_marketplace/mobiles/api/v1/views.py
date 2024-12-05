@@ -10,8 +10,8 @@ from rest_framework.generics import (RetrieveUpdateAPIView,
                                      ListCreateAPIView)
 from django.shortcuts import get_object_or_404
 from mobile_marketplace.bids.permissions import IsMobileOwner
-from django.db.models import Count
-from mobile_marketplace.bids.models import Bid
+from django.db.models import Count, Q
+from mobile_marketplace.bids.choices import BidStateTypes
 
 
 class MobileListCreateAPIView(APIView):
@@ -21,7 +21,10 @@ class MobileListCreateAPIView(APIView):
         return super().get_permissions()
 
     def get(self, request):
-        queryset = Mobile.objects.annotate(bids_count=Count('bids'))
+        queryset = Mobile.objects.annotate(
+            pending_bids_count=Count('bids', filter=Q(bids__state=BidStateTypes.PENDING))
+        )
+
         serializer = MobileSerializer(queryset, many=True)
         return Response(serializer.data)
 

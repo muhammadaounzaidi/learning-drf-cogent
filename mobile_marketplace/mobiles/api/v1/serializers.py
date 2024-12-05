@@ -8,7 +8,7 @@ class MobileSerializer(serializers.ModelSerializer):
         default=serializers.CurrentUserDefault(),
         queryset=User.objects.filter(is_active=True),
     )
-    bids_count = serializers.IntegerField(read_only=True)
+    pending_bids_count = serializers.IntegerField(read_only=True)
 
     class Meta:
         model = Mobile
@@ -21,5 +21,5 @@ class MobileSerializer(serializers.ModelSerializer):
             'condition',
             'asking_amount',
             'user',
-            'bids_count',
+            'pending_bids_count',
             )
