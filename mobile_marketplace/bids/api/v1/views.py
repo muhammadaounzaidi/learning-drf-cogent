@@ -57,7 +57,7 @@ class MobileBidGenericListAPIView(ListAPIView):
 
     def get_queryset(self):
         mobile = get_object_or_404(Mobile, id=self.kwargs['pk'])
-        return Bid.objects.filter(mobile=mobile)
+        return Bid.objects.filter(mobile=mobile).select_related('mobile')
 
 
 class BidAcceptGenericAPIView(UpdateAPIView):

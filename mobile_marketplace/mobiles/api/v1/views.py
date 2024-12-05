@@ -97,7 +97,7 @@ class UserMobileGenericAPIView(ListAPIView):
     filterset_fields = ['company']
 
     def get_queryset(self):
-        return Mobile.objects.filter(user=self.request.user)
+        return Mobile.objects.filter(user=self.request.user).select_related('user')
 
 
 class MobileDeleteGenericAPIView(DestroyAPIView):
