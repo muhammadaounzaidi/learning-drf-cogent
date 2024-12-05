@@ -42,6 +42,7 @@ THIRD_PARTY_APPS = [
     'django_admin_generator',
     'django_fsm',
     'django_filters',
+    'silk'
 ]
 
 CUSTOM_APPS = [
@@ -85,6 +86,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'silk.middleware.SilkyMiddleware',
 ]
 
 ROOT_URLCONF = 'config.urls'

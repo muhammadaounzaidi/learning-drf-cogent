@@ -11,7 +11,7 @@ class MobileSerializer(serializers.ModelSerializer):
         queryset=User.objects.filter(is_active=True),
     )
     pending_bids_count = serializers.IntegerField(read_only=True)
-    pending_bids = serializers.SerializerMethodField()
+    bids = BidSerializer(many=True, read_only=True)
 
     class Meta:
         model = Mobile
@@ -25,9 +25,5 @@ class MobileSerializer(serializers.ModelSerializer):
             'asking_amount',
             'user',
             'pending_bids_count',
-            'pending_bids',
+            'bids',
         )
-
-    def get_pending_bids(self, obj):
-        pending_bids = obj.bids.filter(state=BidStateTypes.PENDING)
-        return BidSerializer(pending_bids, many=True).data
