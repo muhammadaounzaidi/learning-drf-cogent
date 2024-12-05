@@ -10,8 +10,7 @@ from rest_framework.generics import (RetrieveUpdateAPIView,
                                      ListCreateAPIView)
 from django.shortcuts import get_object_or_404
 from mobile_marketplace.bids.permissions import IsMobileOwner
-from rest_framework.filters import SearchFilter, OrderingFilter
-from django_filters.rest_framework import DjangoFilterBackend
+
 
 class MobileListCreateAPIView(APIView):
     def get_permissions(self):
@@ -76,7 +75,6 @@ class MobileDeleteAPIView(APIView):
 class MobileListCreateGenericAPIView(ListCreateAPIView):
     queryset = Mobile.objects.all()
     serializer_class = MobileSerializer
-    filter_backends = [SearchFilter, OrderingFilter, DjangoFilterBackend]
     search_fields = ['name', 'company']
     ordering_fields = ['asking_amount']
     filterset_fields = ['company']
@@ -94,7 +92,6 @@ class MobileGenericAPIView(RetrieveUpdateAPIView):
 
 class UserMobileGenericAPIView(ListAPIView):
     serializer_class = MobileSerializer
-    filter_backends = [SearchFilter, OrderingFilter, DjangoFilterBackend]
     search_fields = ['name', 'company']
     ordering_fields = ['asking_amount']
     filterset_fields = ['company']
