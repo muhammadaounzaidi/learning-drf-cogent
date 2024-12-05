@@ -22,7 +22,7 @@ class MobileListCreateAPIView(APIView):
 
     def get(self, request):
         queryset = Mobile.objects.annotate(
-            pending_bids_count=Count('bids', filter=Q(bids__state=BidStateTypes.PENDING))
+            pending_bids_count=Count('bids', filter=Q(bids__state=BidStateTypes.PENDING), distinct=True)
         )
 
         serializer = MobileSerializer(queryset, many=True)
