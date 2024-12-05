@@ -4,11 +4,14 @@ from mobile_marketplace.mobiles.api.v1.serializers import MobileSerializer
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.permissions import AllowAny
-from rest_framework.generics import (RetrieveUpdateAPIView, ListAPIView,
-                                     DestroyAPIView, ListCreateAPIView)
+from rest_framework.generics import (RetrieveUpdateAPIView,
+                                     ListAPIView,
+                                     DestroyAPIView,
+                                     ListCreateAPIView)
 from django.shortcuts import get_object_or_404
 from mobile_marketplace.bids.permissions import IsMobileOwner
-
+from rest_framework.filters import SearchFilter, OrderingFilter
+from django_filters.rest_framework import DjangoFilterBackend
 
 class MobileListCreateAPIView(APIView):
     def get_permissions(self):
@@ -73,6 +76,10 @@ class MobileDeleteAPIView(APIView):
 class MobileListCreateGenericAPIView(ListCreateAPIView):
     queryset = Mobile.objects.all()
     serializer_class = MobileSerializer
+    filter_backends = [SearchFilter, OrderingFilter, DjangoFilterBackend]
+    search_fields = ['name', 'company']
+    ordering_fields = ['asking_amount']
+    filterset_fields = ['company']
 
     def get_permissions(self):
         if self.request.method == 'GET':
@@ -87,6 +94,10 @@ class MobileGenericAPIView(RetrieveUpdateAPIView):
 
 class UserMobileGenericAPIView(ListAPIView):
     serializer_class = MobileSerializer
+    filter_backends = [SearchFilter, OrderingFilter, DjangoFilterBackend]
+    search_fields = ['name', 'company']
+    ordering_fields = ['asking_amount']
+    filterset_fields = ['company']
 
     def get_queryset(self):
         return Mobile.objects.filter(user=self.request.user)

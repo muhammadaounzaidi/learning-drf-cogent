@@ -8,6 +8,8 @@ from mobile_marketplace.mobiles.models import Mobile
 from mobile_marketplace.bids.choices import BidStateTypes
 from mobile_marketplace.bids.permissions import IsMobileOwner
 from rest_framework.generics import CreateAPIView, ListAPIView, UpdateAPIView
+from rest_framework.filters import OrderingFilter
+from django_filters.rest_framework import DjangoFilterBackend
 
 
 class BidCreateAPIView(APIView):
@@ -52,6 +54,9 @@ class BidCreateGenericAPIView(CreateAPIView):
 
 class MobileBidGenericListAPIView(ListAPIView):
     serializer_class = BidSerializer
+    filter_backends = [OrderingFilter, DjangoFilterBackend]
+    ordering_fields = ['amount']
+    filterset_fields = ['state']
 
     def get_queryset(self):
         mobile = get_object_or_404(Mobile, id=self.kwargs['pk'])
