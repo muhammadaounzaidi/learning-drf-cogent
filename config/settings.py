@@ -40,7 +40,8 @@ THIRD_PARTY_APPS = [
     'django_extensions',
     'drf_yasg',
     'django_admin_generator',
-    'django_fsm'
+    'django_fsm',
+    'django_filters',
 ]
 
 CUSTOM_APPS = [
@@ -60,7 +61,12 @@ REST_FRAMEWORK = {
     ],
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAuthenticated',
-    ]
+    ],
+    "DEFAULT_FILTER_BACKENDS": [
+        "django_filters.rest_framework.DjangoFilterBackend",
+        "rest_framework.filters.SearchFilter",
+        "rest_framework.filters.OrderingFilter",
+    ],
 }
 
 SIMPLE_JWT = {

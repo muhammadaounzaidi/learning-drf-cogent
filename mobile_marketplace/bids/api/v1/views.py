@@ -52,6 +52,8 @@ class BidCreateGenericAPIView(CreateAPIView):
 
 class MobileBidGenericListAPIView(ListAPIView):
     serializer_class = BidSerializer
+    ordering_fields = ['amount']
+    filterset_fields = ['state']
 
     def get_queryset(self):
         mobile = get_object_or_404(Mobile, id=self.kwargs['pk'])
