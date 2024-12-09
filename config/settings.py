@@ -111,6 +111,48 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'config.wsgi.application'
 
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": True,
+    "formatters": {
+        "simple": {
+            "format": "{asctime} {levelname} {message}",
+            "style": "{",
+        },
+    },
+    "handlers": {
+        "file": {
+            "level": "INFO",
+            "class": "mobile_marketplace.core.logging.handler.LoggingHandler",
+            "filename": BASE_DIR / "debug.log",
+            "formatter": "simple",
+            "backupCount": 10,
+            "maxBytes": 1 * 1024 * 1024,  # 1 MB
+        },
+        "console": {
+            "class": "logging.StreamHandler",
+            "formatter": "simple",
+        },
+    },
+    "loggers": {
+        "django.request": {
+            "handlers": [
+                "file",
+                "console",
+            ],
+            "level": "ERROR",
+            "propagate": False,
+        },
+        "mobile_marketplace": {
+            "handlers": [
+                "file",
+                "console",
+            ],
+            "level": "INFO",
+        },
+    },
+}
+
 
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
