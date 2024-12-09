@@ -8,7 +8,7 @@ logger = logging.getLogger('mobile_marketplace')
 
 
 @shared_task
-def deleting_mobiles_after_14_days():
+def delete_mobile_after_expiry():
     mobiles_to_delete = Mobile.objects.filter(created__lt=timezone.now() - timedelta(days=14))
     deleted_count, _ = mobiles_to_delete.delete()
 
