@@ -42,7 +42,9 @@ THIRD_PARTY_APPS = [
     'django_admin_generator',
     'django_fsm',
     'django_filters',
-    'silk'
+    'silk',
+    "django_celery_beat",
+    "django_celery_results",
 ]
 
 CUSTOM_APPS = [
@@ -109,6 +111,48 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'config.wsgi.application'
 
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": True,
+    "formatters": {
+        "simple": {
+            "format": "{asctime} {levelname} {message}",
+            "style": "{",
+        },
+    },
+    "handlers": {
+        "file": {
+            "level": "INFO",
+            "class": "mobile_marketplace.core.logging.handler.LoggingHandler",
+            "filename": BASE_DIR / "debug.log",
+            "formatter": "simple",
+            "backupCount": 10,
+            "maxBytes": 1 * 1024 * 1024,  # 1 MB
+        },
+        "console": {
+            "class": "logging.StreamHandler",
+            "formatter": "simple",
+        },
+    },
+    "loggers": {
+        "django.request": {
+            "handlers": [
+                "file",
+                "console",
+            ],
+            "level": "ERROR",
+            "propagate": False,
+        },
+        "mobile_marketplace": {
+            "handlers": [
+                "file",
+                "console",
+            ],
+            "level": "INFO",
+        },
+    },
+}
+
 
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
@@ -138,6 +182,16 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+
+REDIS_URL = config("REDIS_URL")
+CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers.DatabaseScheduler'
+CELERY_BROKER_URL = "redis://localhost:6379/0"
+CELERY_RESULT_BACKEND = 'django-db'
+CELERY_ACCEPT_CONTENT = [
+    "application/json",
+]
+CELERY_TASK_SERIALIZER = "json"
+CELERY_RESULT_SERIALIZER = "json"
 
 
 # Internationalization
